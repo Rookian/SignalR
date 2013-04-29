@@ -4,26 +4,19 @@ namespace MVCSignalRSQLDependency.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        private readonly IRepository _repository;
+
+        public HomeController(IRepository repository)
         {
-            var repository = new Repository();
-            var enumerable = repository.Get();
-             
-            //if (Request.IsAjaxRequest())
-            //    return Json(enumerable, JsonRequestBehavior.AllowGet);
-            
-            return View(enumerable);
+            _repository = repository;
         }
 
-       
+        public ActionResult Index()
+        {
+            var persons = _repository.GetPersons();
+
+            return View(persons);
+        }
     }
 
-    public class Person
-    {
-        public string LastName { get; set; }
-
-        public string FirstName { get; set; }
-
-        public long ID { get; set; }
-    }
 }
